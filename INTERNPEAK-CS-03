@@ -1,0 +1,30 @@
+//Python Program on Packet Sniffer:
+# Function to process each captured packet
+def packet_callback(packet):
+    if IP in packet:
+        ip_src = packet[IP].src
+        ip_dst = packet[IP].dst
+        
+        if TCP in packet:
+            protocol = "TCP"
+            src_port = packet[TCP].sport
+            dst_port = packet[TCP].dport
+        elif UDP in packet:
+            protocol = "UDP"
+            src_port = packet[UDP].sport
+            dst_port = packet[UDP].dport
+        else:
+            protocol = "Other"
+            src_port = "N/A"
+            dst_port = "N/A"
+        
+        print(f"IP {ip_src} -> {ip_dst} | Protocol: {protocol} | Src Port: {src_port} | Dst Port: {dst_port}")
+
+# Function to start the sniffer
+def start_sniffer(interface):
+    print(f"Sniffing on interface: {interface}")
+    sniff(iface=interface, prn=packet_callback, store=0)
+
+if _name_ == "_main_":
+    interface = input("Enter the interface to sniff on (e.g., eth0, wlan0): ")
+    start_sniffer(interface)
