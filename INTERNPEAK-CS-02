@@ -1,0 +1,26 @@
+// Python Program on Password Cracking Tool
+import itertools
+import string
+import time
+def check_password(attempt, actual_password):
+    return attempt == actual_password
+def brute_force_password(actual_password, max_length=4):
+    characters = string.ascii_lowercase + string.digits
+    attempts = 0
+    for length in range(1, max_length + 1):
+        for attempt in itertools.product(characters, repeat=length):
+            attempts += 1
+            attempt = ''.join(attempt)
+            if check_password(attempt, actual_password):
+                return attempt, attempts
+
+    return None, attempts
+actual_password = "abc"  # This is the password we are trying to crack
+start_time = time.time()
+cracked_password, attempts = brute_force_password(actual_password)
+end_time = time.time()
+
+if cracked_password:
+    print(f"Password '{cracked_password}' cracked in {attempts} attempts and {end_time - start_time:.2f} seconds.")
+else:
+    print(f"Password not cracked in {attempts} attempts.")
