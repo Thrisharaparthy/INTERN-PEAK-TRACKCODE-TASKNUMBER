@@ -1,0 +1,15 @@
+//Python Program on Intrusion Detection System
+import scapy.all as scapy
+
+# Define a function to capture network traffic
+def capture_traffic(interface):
+    scapy.sniff(iface=interface, store=False, prn=process_packet)
+
+# Define a function to process each packet
+def process_packet(packet):
+    # Check for suspicious traffic (e.g., incoming connections on port 22)
+    if packet.haslayer(scapy.TCP) and packet.getlayer(scapy.TCP).dport == 22:
+        print("Suspicious traffic detected:", packet.summary())
+
+# Start capturing traffic on the default interface
+capture_traffic(scapy.conf.ifaces.default_iface)
